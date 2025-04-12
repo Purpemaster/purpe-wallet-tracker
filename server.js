@@ -11,7 +11,7 @@ app.get('/', async (req, res) => {
   const fbToken = process.env.FB_ACCESS_TOKEN;
 
   try {
-    const response = await fetch(`https://graph.facebook.com/${fbPageId}/feed`, {
+    const response = await fetch(`https://graph.facebook.com/v18.0/${fbPageId}/feed`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -22,13 +22,19 @@ app.get('/', async (req, res) => {
 
     const data = await response.json();
     console.log('Facebook-Antwort:', data);
-    res.send('Facebook-Post erfolgreich!');
+
+    if (data.error) {
+      console.error('Facebook-Fehler:', data.error);
+      res.status(500).send(`Fehler beim Posten: ${data.error.message}`);
+    } else {
+      res.send('Facebook-Post erfolgreich!');
+    }
   } catch (err) {
     console.error('Fehler beim Posten:', err);
     res.status(500).send('Fehler beim Posten');
   }
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server läuft auf Port ${PORT}`);
 });
