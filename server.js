@@ -12,14 +12,22 @@ app.get('/', async (req, res) => {
   const fbToken = process.env.FB_ACCESS_TOKEN;
 
   try {
-    const response = await fetch(`https://graph.facebook.com/${fbPageId}/feed`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: message,
-        access_token: fbToken,
-      }),
-    });
+  const response = await fetch(`https://graph.facebook.com/${fbPageId}/feed`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      message: message,
+      access_token: fbToken
+    })
+  });
+
+  const data = await response.json();
+  console.log('Facebook-Antwort:', data);
+  res.send('Facebook-Post erfolgreich!');
+} catch (err) {
+  console.error('Fehler beim Posten:', err);
+  res.status(500).send('Fehler beim Posten');
+}
 
     const data = await response.json();
     console.log('Facebook-Antwort:', data);
