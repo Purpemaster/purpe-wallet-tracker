@@ -1,13 +1,14 @@
+
 const express = require('express');
 const fetch = require('node-fetch');
 const app = express();
+
 const PORT = process.env.PORT || 3000;
 
 app.get('/', async (req, res) => {
   const totalUSD = 2414.59 + 898.66 + 544.97;
-  const message = `Aktueller Spendenstand: $${totalUSD.toFixed(2)}!\nPURPE: $2414.59\nSOL: $898.66\nPYUSD: $544.97`;
+  const message = `Aktueller Spendenstand: $${totalUSD.toFixed(2)}`;
 
-  // Facebook Post
   const fbPageId = process.env.PAGE_ID;
   const fbToken = process.env.FB_ACCESS_TOKEN;
 
@@ -33,3 +34,4 @@ app.get('/', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server läuft auf Port ${PORT}`);
 });
+
